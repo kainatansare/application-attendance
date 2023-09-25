@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Sign In</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="container">
+        <form id="login-form">
+            <h2>Admin Sign In</h2>
+            <div class="form-group">
+                <label for="username">username:</label>
+                <input type="text" id="username" name="username" required>
+        </div>
+            <div class="form-group">
+                <label for="email">email:</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+
+    <script src="signup.js"></script>
+</body>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"; 
+   import { getDatabase,set,ref } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+   import { getAuth,creatUserWithEmailAndPassword,signinWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
+
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyATSxO_KwrvfHpEk3ZGdx7D2dyu81EkqwI",
+      authDomain: "attendance-application-66d93.firebaseapp.com",
+      databaseURL: "https://attendance-application-66d93-default-rtdb.firebaseio.com",
+      projectId: "attendance-application-66d93",
+      storageBucket: "attendance-application-66d93.appspot.com",
+      messagingSenderId: "988706489558",
+      appId: "1:988706489558:web:d4c17e9a20d983546cb577"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
+signin.addEventListener('click',(e)=>{
+    var email = document.getElementById('email').value;  
+      var password = document.getElementById('password').value;
+      var username = document.getElementById('username').value;
+
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    set(ref(database,'users/' + user.uid),{
+      username: username,
+      email:email,
+
+    })
+    alert('user created!');
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert('errorMessage');
+  });
+
+});
+  </script>
+</html>
